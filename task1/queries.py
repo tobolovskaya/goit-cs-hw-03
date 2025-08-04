@@ -171,3 +171,4 @@ if __name__ == "__main__":
     GROUP BY u.fullname;
     """
     execute_query(sql_14, query_number=14)
+    
