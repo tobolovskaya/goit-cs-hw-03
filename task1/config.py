@@ -1,13 +1,7 @@
-#Configuration for database connection and seeding.
-    
 DB_CONFIG = {
-    "dbname": "mydatabase",
+    "dbname": "postgres",
     "user": "postgres",
-    "password": "mypassword",
+    "password": "test_postgres",
     "host": "localhost",
-    "port": "5432",
+    "port": "5433"
 }
-
-NUMBER_USERS = 10
-NUMBER_TASKS = 20
-STATUSES = ["new", "in progress", "completed"]
