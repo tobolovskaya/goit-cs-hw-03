@@ -1,3 +1,5 @@
+#Configuration for database connection and seeding.
+    
 DB_CONFIG = {
     "dbname": "mydatabase",
     "user": "postgres",
