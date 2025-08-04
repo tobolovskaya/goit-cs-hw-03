@@ -1,22 +1,25 @@
+# Utility for creating the PostgreSQL tables used in the task manager.
+
 import psycopg2
 from psycopg2 import Error
 from contextlib import contextmanager
 from colorama import init, Fore, Style
 from config import DB_CONFIG
+from colorama import Fore, init
 
-# Ініціалізація colorama
+# initialise colorama for coloured terminal output
 init(autoreset=True)
 
 
 @contextmanager
 def create_connection():
-    """Створення з'єднання з PostgreSQL."""
+    """Context manager that yields a PostgreSQL connection."""
     conn = None
     try:
         conn = psycopg2.connect(**DB_CONFIG)
         yield conn
         conn.commit()
-    except Exception as e:
+    except Exception as e: # pragma: no cover - console output only
         if conn:
             conn.rollback()
         print(f"{Fore.RED}Помилка підключення: {e}")
@@ -25,18 +28,17 @@ def create_connection():
             conn.close()
 
 
-def create_table(conn, create_table_sql):
-    """Створення таблиці на основі переданого SQL-запиту."""
+def create_table(conn, sql: str) -> None:
+    """Execute SQL statement for table creation."""
     try:
         with conn.cursor() as cursor:
-            cursor.execute(create_table_sql)
+            cursor.execute(sql)
         print(f"{Fore.GREEN}Таблиця успішно створена.")
-    except Error as e:
+    except Error as e: # pragma: no cover - console output only
         print(f"{Fore.RED}Помилка створення таблиці: {e}")
 
 
 if __name__ == "__main__":
-    # SQL-запити для створення таблиць
     sql_create_users_table = """
     CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -45,7 +47,7 @@ if __name__ == "__main__":
     );
     """
     sql_create_statuses_table = """
-    CREATE TABLE IF NOT EXISTS statuses (
+    CREATE TABLE IF NOT EXISTS status (
         id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE
     );
@@ -55,12 +57,11 @@ if __name__ == "__main__":
         id SERIAL PRIMARY KEY,
         title VARCHAR(100),
         description TEXT,
-        status_id INTEGER REFERENCES statuses(id),
+        status_id INTEGER REFERENCES status(id),
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
     );
     """
 
-    # Підключення до бази даних і створення таблиць
     with create_connection() as conn:
         if conn:
             print(f"{Fore.BLUE}Підключення до бази даних успішне.")
@@ -68,8 +69,8 @@ if __name__ == "__main__":
             print(f"{Fore.YELLOW}Створення таблиці 'users'...")
             create_table(conn, sql_create_users_table)
 
-            print(f"{Fore.YELLOW}Створення таблиці 'statuses'...")
-            create_table(conn, sql_create_statuses_table)
+            print(f"{Fore.YELLOW}Створення таблиці 'status'...")
+            create_table(conn, sql_create_status_table)
 
             print(f"{Fore.YELLOW}Створення таблиці 'tasks'...")
             create_table(conn, sql_create_tasks_table)
