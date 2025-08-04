@@ -70,7 +70,7 @@ if __name__ == "__main__":
             create_table(conn, sql_create_users_table)
 
             print(f"{Fore.YELLOW}Створення таблиці 'status'...")
-            create_table(conn, sql_create_status_table)
+            create_table(conn, sql_create_statuses_table)
 
             print(f"{Fore.YELLOW}Створення таблиці 'tasks'...")
             create_table(conn, sql_create_tasks_table)

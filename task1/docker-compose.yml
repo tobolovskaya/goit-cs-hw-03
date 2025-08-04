@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:14
@@ -7,7 +5,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mynewpassword
+      POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydatabase
     ports:
       - "5432:5432"
