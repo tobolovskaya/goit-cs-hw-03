@@ -9,7 +9,7 @@ def main():
     conn = psycopg2.connect(
         dbname="postgres",
         user="postgres",
-        password="test_postgres_psw",
+        password="test_postgres",
         host="localhost",
         port="5432",
     )
